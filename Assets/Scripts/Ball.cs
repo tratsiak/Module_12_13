@@ -12,6 +12,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _speedLimit;
     [SerializeField] private float _jumpForce;
 
+    [SerializeField] private ParticleSystem _ballDieEffect;
+    [SerializeField] private ParticleSystem _celebrateEffect;
+
     private int _coinsCount;
 
     private float _xInput;
@@ -47,15 +50,30 @@ public class Ball : MonoBehaviour
         if (Mathf.Abs(_yInput) > _deadZone && IsSpeedLimit())
             _rigidbody.AddTorque(Vector3.right * _speed * _yInput);
     }
-    public void AddCoin()
-    {
-        _coinsCount++;
-
-        Debug.Log("Ñoins collected: " +  _coinsCount);
-    }
 
     private bool IsSpeedLimit()
     {
         return _rigidbody.velocity.magnitude <= _speedLimit;
+    }
+
+    public void AddCoin()
+    {
+        _coinsCount++;
+    }
+
+    public void Die()
+    {
+        _ballDieEffect.transform.position = transform.position;
+        _ballDieEffect.Play();
+
+        gameObject.SetActive(false);
+    }
+
+    public void Celebrate()
+    {
+        _celebrateEffect.transform.position = transform.position;
+        _celebrateEffect.Play();
+
+        gameObject.SetActive(false);
     }
 }
